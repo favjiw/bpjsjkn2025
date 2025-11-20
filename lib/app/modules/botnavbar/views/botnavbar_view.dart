@@ -1,5 +1,7 @@
 import 'package:bpjs_jkn_2025/app/modules/home/controllers/home_controller.dart';
 import 'package:bpjs_jkn_2025/app/modules/home/views/home_view.dart';
+import 'package:bpjs_jkn_2025/app/modules/news/controllers/news_controller.dart';
+import 'package:bpjs_jkn_2025/app/modules/news/views/news_view.dart';
 import 'package:bpjs_jkn_2025/app/shared/colors.dart';
 import 'package:bpjs_jkn_2025/app/shared/text_style.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +16,11 @@ class BotnavbarView extends GetView<BotnavbarController> {
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => HomeController(), fenix: true);
+    Get.lazyPut(() => NewsController(), fenix: true);
 
     final List<Widget> pages = [
       HomeView(),
-      Container(color: Colors.red),
+      NewsView(),
       Container(color: Colors.green),
       Container(color: Colors.blue),
       Container(color: Colors.yellow),

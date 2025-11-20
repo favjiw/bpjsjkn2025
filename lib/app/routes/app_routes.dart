@@ -8,6 +8,7 @@ abstract class Routes {
   static const SPLASH = _Paths.SPLASH;
   static const ONBOARDING = _Paths.ONBOARDING;
   static const BOTNAVBAR = _Paths.BOTNAVBAR;
+  static const NEWS = _Paths.NEWS;
 }
 
 abstract class _Paths {
@@ -16,4 +17,5 @@ abstract class _Paths {
   static const SPLASH = '/splash';
   static const ONBOARDING = '/onboarding';
   static const BOTNAVBAR = '/botnavbar';
+  static const NEWS = '/news';
 }

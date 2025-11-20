@@ -4,6 +4,8 @@ import '../modules/botnavbar/bindings/botnavbar_binding.dart';
 import '../modules/botnavbar/views/botnavbar_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/news/bindings/news_binding.dart';
+import '../modules/news/views/news_view.dart';
 import '../modules/onboarding/bindings/onboarding_binding.dart';
 import '../modules/onboarding/views/onboarding_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
@@ -38,6 +40,11 @@ class AppPages {
       name: _Paths.BOTNAVBAR,
       page: () => const BotnavbarView(),
       binding: BotnavbarBinding(),
+    ),
+    GetPage(
+      name: _Paths.NEWS,
+      page: () => const NewsView(),
+      binding: NewsBinding(),
     ),
   ];
 }
