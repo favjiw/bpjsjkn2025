@@ -1,23 +1,39 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OnboardingController extends GetxController {
-  //TODO: Implement OnboardingController
+  final pageIndex = 0.obs;
+  final pageController = PageController();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  void updatePageIndex(int index) {
+    pageIndex.value = index;
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void nextPage() {
+    if (pageIndex.value < 2) {
+      pageController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      onActivate();
+    }
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  void skip() {
+    pageController.jumpToPage(2);
+    pageIndex.value = 2;
   }
 
-  void increment() => count.value++;
+
+
+  void onActivate() {
+    // nanti tambahkan save ke local storage
+    Get.offAllNamed('/botnavbar');
+  }
+
+  void onLater() {
+    // user memilih "Nanti Saja"
+    Get.offAllNamed('/botnavbar');
+  }
 }
