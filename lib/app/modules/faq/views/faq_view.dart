@@ -12,34 +12,37 @@ class FaqView extends GetView<FaqController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.secondaryWhite,
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(height: 8.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: const FaqSearchBar(),
-            ),
-            SizedBox(height: 8.h),
-            const Divider(height: 1),
-            Expanded(
-              child: Obx(
-                    () => ListView.separated(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  itemCount: controller.filteredFaqs.length,
-                  separatorBuilder: (context, index) => const Divider(
-                    height: 1,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: AppColors.secondaryWhite,
+        body: SafeArea(
+          child: Column(
+            children: [
+              SizedBox(height: 8.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: const FaqSearchBar(),
+              ),
+              SizedBox(height: 8.h),
+              const Divider(height: 1),
+              Expanded(
+                child: Obx(
+                      () => ListView.separated(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    itemCount: controller.filteredFaqs.length,
+                    separatorBuilder: (context, index) => const Divider(
+                      height: 1,
+                    ),
+                    itemBuilder: (context, index) {
+                      final item = controller.filteredFaqs[index];
+                      return FaqItem(data: item);
+                    },
                   ),
-                  itemBuilder: (context, index) {
-                    final item = controller.filteredFaqs[index];
-                    return FaqItem(data: item);
-                  },
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
