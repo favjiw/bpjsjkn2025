@@ -2,11 +2,11 @@ import 'package:get/get.dart';
 
 class ChooseAuthController extends GetxController {
   void onMasuk() {
-    Get.toNamed('/login');
+    Get.toNamed('/signin');
   }
 
   void onDaftar() {
-    Get.toNamed('/register');
+    Get.toNamed('/signup');
   }
 
   void onBack() {

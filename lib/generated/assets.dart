@@ -4,6 +4,7 @@ class Assets {
 
   static const String assetsJknLogo = 'assets/jkn_logo.jpg';
   static const String assetsLoginBgImg = 'assets/login_bg_img.png';
+  static const String assetsMobileJknLogo = 'assets/mobile_jkn_logo.png';
   static const String assetsOnboard1Img = 'assets/onboard_1_img.png';
   static const String assetsOnboard2Img = 'assets/onboard_2_img.png';
   static const String assetsOnboard3Img = 'assets/onboard_3_img.png';
