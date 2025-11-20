@@ -11,32 +11,12 @@ class HeaderSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 1.sw,
-      padding: EdgeInsets.only(
-        left: 16.w,
-        right: 16.w,
-        top: 12.h,
-        bottom: 16.h,
-      ),
+      height: 110.h,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppColors.headerCyan,
-            AppColors.primaryBlue,
-          ],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
+        image: DecorationImage(
+          image: AssetImage('assets/appbar_img.png'),
+          fit: BoxFit.cover,
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // bar status dan ikon di atas bisa diabaikan, lebih fokus konten
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-            ],
-          ),
-        ],
       ),
     );
   }

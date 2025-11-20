@@ -25,15 +25,15 @@ class OnlineQueueCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 70.w,
+            width: 80.w,
             height: 70.w,
             decoration: BoxDecoration(
               color: AppColors.secondaryWhite,
               borderRadius: BorderRadius.circular(50.r),
-            ),
-            child: const Icon(
-              Icons.people_alt_rounded,
-              color: AppColors.primaryBlue,
+              image: DecorationImage(
+                image: AssetImage('assets/queue_ic.png'),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           SizedBox(width: 12.w),
@@ -44,17 +44,23 @@ class OnlineQueueCard extends StatelessWidget {
                 Text(
                   'Antrean Online',
                   style: AppTextStyles.labelBold.copyWith(
-                    color: AppColors.mainBlack,
+                    color: AppColors.primaryBlue,
                   ),
                 ),
-                SizedBox(height: 4.h),
+                SizedBox(height: 8.h),
                 Text(
                   'Untuk kunjungan lebih efisien tanpa harus menunggu lama.',
                   style: AppTextStyles.bodyLight,
                 ),
                 SizedBox(height: 8.h),
+                Container(
+                  width: 1.sw,
+                  height: 1.h,
+                  color: AppColors.lightGrey,
+                ),
+                SizedBox(height: 8.h),
                 Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.center,
                   child: SizedBox(
                     height: 34.h,
                     child: ElevatedButton(
@@ -64,7 +70,8 @@ class OnlineQueueCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20.r),
                         ),
                         padding: EdgeInsets.symmetric(
-                          horizontal: 18.w,
+                          horizontal: 25.w,
+                          vertical: 6.h,
                         ),
                       ),
                       onPressed: () {},

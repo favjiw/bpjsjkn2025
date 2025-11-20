@@ -115,8 +115,8 @@ class AppTextStyles {
 
   // Teks putih di dalam badge atau tombol berwarna
   static TextStyle get recom => GoogleFonts.plusJakartaSans(
-    fontSize: 12.sp,
-    fontWeight: FontWeight.w500,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w600,
     color: AppColors.mainWhite,
   );
 

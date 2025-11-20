@@ -10,77 +10,82 @@ class HomeController extends GetxController {
   List<HomeMenuItemData> menuItems = [
     HomeMenuItemData(
       title: 'Info Program\nJKN',
-      iconPath: 'assets/icons/info_program.png',
-      isLocked: false,
+      iconPath: 'assets/info_program_ic.png',
+      isLocked: true,
     ),
     HomeMenuItemData(
       title: 'TELEHEALTH',
-      iconPath: 'assets/icons/telehealth.png',
-      isLocked: false,
+      iconPath: 'assets/telehealth_ic.png',
+      isLocked: true,
     ),
     HomeMenuItemData(
       title: 'Info Riwayat\nPelayanan',
-      iconPath: 'assets/icons/info_riwayat.png',
+      iconPath: 'assets/icare_ic.png',
       isLocked: true,
     ),
     HomeMenuItemData(
       title: 'Bugar',
-      iconPath: 'assets/icons/bugar.png',
+      iconPath: 'assets/bugar_ic.png',
       isLocked: true,
     ),
     HomeMenuItemData(
       title: 'NEW Rehab\n(Cicilan)',
-      iconPath: 'assets/icons/rehab.png',
-      isLocked: false,
+      iconPath: 'assets/rehab_ic.png',
+      isLocked: true,
     ),
     HomeMenuItemData(
       title: 'Pendaftaran\nPeserta Baru',
-      iconPath: 'assets/icons/pendaftaran.png',
+      iconPath: 'assets/regis_home_ic.png',
       isLocked: true,
     ),
     HomeMenuItemData(
       title: 'Info Peserta',
-      iconPath: 'assets/icons/info_peserta.png',
-      isLocked: false,
-    ),
-    HomeMenuItemData(
-      title: 'SOS',
-      iconPath: 'assets/icons/sos.png',
-      isLocked: false,
+      iconPath: 'assets/info_home_ic.png',
+      isLocked: true,
     ),
     HomeMenuItemData(
       title: 'Info Lokasi\nFaskes',
-      iconPath: 'assets/icons/lokasi_faskes.png',
-      isLocked: false,
+      iconPath: 'assets/map_home_ic.png',
+      isLocked: true,
     ),
     HomeMenuItemData(
       title: 'Perubahan\nData Peserta',
-      iconPath: 'assets/icons/perubahan_data.png',
-      isLocked: false,
-    ),
-    HomeMenuItemData(
-      title: 'Pengaduan\nLayanan JKN',
-      iconPath: 'assets/icons/pengaduan.png',
+      iconPath: 'assets/form_ic.png',
       isLocked: true,
     ),
     HomeMenuItemData(
       title: 'Menu Lainnya',
-      iconPath: 'assets/icons/lainnya.png',
+      iconPath: 'assets/menu_ic.png',
       isLocked: false,
     ),
   ];
 
   // data banner bagian bawah
   List<String> bannerImages = [
-    'assets/banners/banner_1.png',
-    'assets/banners/banner_2.png',
-    'assets/banners/banner_3.png',
+    'assets/home_img.jpg',
+    'assets/home_img.jpg',
+    'assets/home_img.jpg',
   ];
 
   final currentBannerIndex = 0.obs;
 
   void onBannerChanged(int index) {
     currentBannerIndex.value = index;
+  }
+
+  void onMenuTap(HomeMenuItemData item) {
+    if (item.isLocked) {
+      Get.defaultDialog(
+        title: 'Fitur tidak tersedia',
+        middleText:
+        'Fitur ini tidak dapat diakses karena aplikasi ini hanya untuk demo.',
+        textConfirm: 'OK',
+        onConfirm: () => Get.back(),
+      );
+    } else {
+      // di sini nanti bisa diarahkan ke halaman sebenarnya
+      // contoh: Get.toNamed('/info-program');
+    }
   }
 }
 

@@ -18,7 +18,7 @@ class OnboardingView extends GetView<OnboardingController> {
       statusBarIconBrightness: Brightness.dark,
     ));
     return Scaffold(
-      backgroundColor: AppColors.secondaryWhite,
+      backgroundColor: AppColors.mainWhite,
       body: Column(
         children: [
           Expanded(
@@ -83,20 +83,10 @@ class OnboardingView extends GetView<OnboardingController> {
                               ),
                               onPressed: controller.onActivate,
                               child: Text(
-                                "Aktifkan Kolaborasi",
+                                "Mulai",
                                 style: AppTextStyles.labelBold.copyWith(
                                   color: AppColors.mainWhite,
                                 ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 12.h),
-                          TextButton(
-                            onPressed: controller.onLater,
-                            child: Text(
-                              "Nanti Saja",
-                              style: AppTextStyles.labelBold.copyWith(
-                                color: AppColors.primaryBlue,
                               ),
                             ),
                           ),

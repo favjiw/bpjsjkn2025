@@ -31,9 +31,4 @@ class OnboardingController extends GetxController {
     // nanti tambahkan save ke local storage
     Get.offAllNamed('/botnavbar');
   }
-
-  void onLater() {
-    // user memilih "Nanti Saja"
-    Get.offAllNamed('/botnavbar');
-  }
 }

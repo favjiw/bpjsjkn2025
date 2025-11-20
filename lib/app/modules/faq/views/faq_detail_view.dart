@@ -13,7 +13,7 @@ class FaqDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.secondaryWhite,
+      backgroundColor: AppColors.mainWhite,
       body: SafeArea(
         child: Column(
           children: [

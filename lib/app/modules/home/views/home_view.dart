@@ -18,7 +18,7 @@ class HomeView extends GetView<HomeController> {
       init: HomeController(),
       builder: (_) {
         return Scaffold(
-          backgroundColor: AppColors.secondaryWhite,
+          backgroundColor: AppColors.mainWhite,
           body: Column(
             children: [
               const HeaderSection(),

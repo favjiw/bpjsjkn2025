@@ -2,12 +2,25 @@
 class Assets {
   Assets._();
 
+  static const String assetsAppbarImg = 'assets/appbar_img.png';
+  static const String assetsBugarIc = 'assets/bugar_ic.png';
+  static const String assetsFormIc = 'assets/form_ic.png';
+  static const String assetsHomeImg = 'assets/home_img.jpg';
+  static const String assetsIcareIc = 'assets/icare_ic.png';
+  static const String assetsInfoHomeIc = 'assets/info_home_ic.png';
+  static const String assetsInfoProgramIc = 'assets/info_program_ic.png';
   static const String assetsJknLogo = 'assets/jkn_logo.jpg';
   static const String assetsLoginBgImg = 'assets/login_bg_img.png';
+  static const String assetsMapHomeIc = 'assets/map_home_ic.png';
+  static const String assetsMenuIc = 'assets/menu_ic.png';
   static const String assetsMobileJknLogo = 'assets/mobile_jkn_logo.png';
   static const String assetsOnboard1Img = 'assets/onboard_1_img.png';
   static const String assetsOnboard2Img = 'assets/onboard_2_img.png';
   static const String assetsOnboard3Img = 'assets/onboard_3_img.png';
+  static const String assetsQueueIc = 'assets/queue_ic.png';
+  static const String assetsRegisHomeIc = 'assets/regis_home_ic.png';
+  static const String assetsRehabIc = 'assets/rehab_ic.png';
   static const String assetsSplashImg = 'assets/splash_img.png';
+  static const String assetsTelehealthIc = 'assets/telehealth_ic.png';
 
 }

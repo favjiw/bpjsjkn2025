@@ -16,7 +16,7 @@ class NewsView extends GetView<NewsController> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: AppColors.secondaryWhite,
+        backgroundColor: AppColors.mainWhite,
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),

@@ -15,7 +15,7 @@ class SignupView extends GetView<SignupController> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: AppColors.secondaryWhite,
+        backgroundColor: AppColors.mainWhite,
         body: SafeArea(
           child: Column(
             children: [
