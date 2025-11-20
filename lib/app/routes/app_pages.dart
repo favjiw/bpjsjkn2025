@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/botnavbar/bindings/botnavbar_binding.dart';
 import '../modules/botnavbar/views/botnavbar_view.dart';
+import '../modules/choose_auth/bindings/choose_auth_binding.dart';
+import '../modules/choose_auth/views/choose_auth_view.dart';
 import '../modules/faq/bindings/faq_binding.dart';
 import '../modules/faq/views/faq_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -10,6 +12,8 @@ import '../modules/news/bindings/news_binding.dart';
 import '../modules/news/views/news_view.dart';
 import '../modules/onboarding/bindings/onboarding_binding.dart';
 import '../modules/onboarding/views/onboarding_view.dart';
+import '../modules/signin/bindings/signin_binding.dart';
+import '../modules/signin/views/signin_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 
@@ -52,6 +56,16 @@ class AppPages {
       name: _Paths.FAQ,
       page: () => const FaqView(),
       binding: FaqBinding(),
+    ),
+    GetPage(
+      name: _Paths.SIGNIN,
+      page: () => const SigninView(),
+      binding: SigninBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHOOSE_AUTH,
+      page: () => const ChooseAuthView(),
+      binding: ChooseAuthBinding(),
     ),
   ];
 }

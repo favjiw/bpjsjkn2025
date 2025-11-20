@@ -10,6 +10,8 @@ abstract class Routes {
   static const BOTNAVBAR = _Paths.BOTNAVBAR;
   static const NEWS = _Paths.NEWS;
   static const FAQ = _Paths.FAQ;
+  static const SIGNIN = _Paths.SIGNIN;
+  static const CHOOSE_AUTH = _Paths.CHOOSE_AUTH;
 }
 
 abstract class _Paths {
@@ -20,4 +22,6 @@ abstract class _Paths {
   static const BOTNAVBAR = '/botnavbar';
   static const NEWS = '/news';
   static const FAQ = '/faq';
+  static const SIGNIN = '/signin';
+  static const CHOOSE_AUTH = '/choose-auth';
 }

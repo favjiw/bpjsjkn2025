@@ -32,13 +32,20 @@ class HomeView extends GetView<HomeController> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              IconButton(onPressed: (){}, icon: Icon(Icons.output_rounded, color: AppColors.mainBlack,)),
-                              SizedBox(width: 8.w),
-                              Text('Masuk/Daftar', style: AppTextStyles.labelBold,),
-                            ],
+                          InkWell(
+                            onTap: (){
+                              Get.toNamed('/choose-auth');
+                            },
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                IconButton(onPressed: (){
+                                  Get.toNamed('/choose-auth');
+                                }, icon: Icon(Icons.output_rounded, color: AppColors.mainBlack,)),
+                                SizedBox(width: 8.w),
+                                Text('Masuk/Daftar', style: AppTextStyles.labelBold,),
+                              ],
+                            ),
                           ),
                           Text('v4.14.0', style: AppTextStyles.labelBold,)
                         ],
