@@ -1,3 +1,5 @@
+import 'package:bpjs_jkn_2025/app/modules/faq/controllers/faq_controller.dart';
+import 'package:bpjs_jkn_2025/app/modules/faq/views/faq_view.dart';
 import 'package:bpjs_jkn_2025/app/modules/home/controllers/home_controller.dart';
 import 'package:bpjs_jkn_2025/app/modules/home/views/home_view.dart';
 import 'package:bpjs_jkn_2025/app/modules/news/controllers/news_controller.dart';
@@ -17,12 +19,13 @@ class BotnavbarView extends GetView<BotnavbarController> {
   Widget build(BuildContext context) {
     Get.lazyPut(() => HomeController(), fenix: true);
     Get.lazyPut(() => NewsController(), fenix: true);
+    Get.lazyPut(() => FaqController(), fenix: true);
 
     final List<Widget> pages = [
       HomeView(),
       NewsView(),
       Container(color: Colors.green),
-      Container(color: Colors.blue),
+      FaqView(),
       Container(color: Colors.yellow),
     ];
     return Obx(
