@@ -29,7 +29,7 @@ class BotnavbarView extends GetView<BotnavbarController> {
       Container(color: Colors.yellow),
     ];
     return Obx(
-          () => Scaffold(
+      () => Scaffold(
         backgroundColor: AppColors.secondaryWhite,
         body: pages[controller.currentIndex.value],
         bottomNavigationBar: SizedBox(
@@ -43,9 +43,7 @@ class BotnavbarView extends GetView<BotnavbarController> {
                 child: Container(
                   width: 1.sw,
                   height: 80.h,
-                  decoration: BoxDecoration(
-                    color: AppColors.mainWhite,
-                  ),
+                  decoration: BoxDecoration(color: AppColors.mainWhite),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -56,7 +54,12 @@ class BotnavbarView extends GetView<BotnavbarController> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.home_rounded, color: controller.currentIndex.value == 0 ? AppColors.primaryBlue : Colors.grey,),
+                            Icon(
+                              Icons.home_rounded,
+                              color: controller.currentIndex.value == 0
+                                  ? AppColors.primaryBlue
+                                  : Colors.grey,
+                            ),
                             // SvgPicture.asset(
                             //   controller.currentIndex.value == 0
                             //       ? 'assets/images/home_act_ic.svg'
@@ -81,7 +84,12 @@ class BotnavbarView extends GetView<BotnavbarController> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.newspaper_rounded, color: controller.currentIndex.value == 1 ? AppColors.primaryBlue : Colors.grey,),
+                            Icon(
+                              Icons.newspaper_rounded,
+                              color: controller.currentIndex.value == 1
+                                  ? AppColors.primaryBlue
+                                  : Colors.grey,
+                            ),
                             // SvgPicture.asset(
                             //   controller.currentIndex.value == 1
                             //       ? 'assets/images/meals_act_ic.svg'
@@ -107,7 +115,12 @@ class BotnavbarView extends GetView<BotnavbarController> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.chat_bubble_rounded, color: controller.currentIndex.value == 3 ? AppColors.primaryBlue : Colors.grey,),
+                            Icon(
+                              Icons.chat_bubble_rounded,
+                              color: controller.currentIndex.value == 3
+                                  ? AppColors.primaryBlue
+                                  : Colors.grey,
+                            ),
                             // SvgPicture.asset(
                             //   controller.currentIndex.value == 3
                             //       ? 'assets/images/stats_act_ic.svg'
@@ -132,7 +145,12 @@ class BotnavbarView extends GetView<BotnavbarController> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.person_pin, color: controller.currentIndex.value == 4 ? AppColors.primaryBlue : Colors.grey,),
+                            Icon(
+                              Icons.person_pin,
+                              color: controller.currentIndex.value == 4
+                                  ? AppColors.primaryBlue
+                                  : Colors.grey,
+                            ),
                             // SvgPicture.asset(
                             //   controller.currentIndex.value == 4
                             //       ? 'assets/images/profile_act_ic.svg'
@@ -181,7 +199,10 @@ class BotnavbarView extends GetView<BotnavbarController> {
                         ),
                       ),
                       child: Center(
-                        child: Icon(Icons.credit_card, color: AppColors.mainWhite,),
+                        child: Icon(
+                          Icons.credit_card,
+                          color: AppColors.mainWhite,
+                        ),
                         // child: SvgPicture.asset(
                         //   'assets/images/scan_ic.svg',
                         //   width: 32.w,
@@ -194,6 +215,14 @@ class BotnavbarView extends GetView<BotnavbarController> {
               ),
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Get.toNamed('/chatbot');
+          },
+          shape: const CircleBorder(),
+          backgroundColor: AppColors.primaryBlue,
+          child: Image.asset('assets/bot_ic.png', width: 35.w, height: 35.h, fit: BoxFit.cover,),
         ),
       ),
     );
