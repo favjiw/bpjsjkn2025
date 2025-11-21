@@ -25,9 +25,13 @@ class ChatbotView extends GetView<ChatbotController> {
           elevation: 0,
           title: Row(
             children: [
-              SizedBox(width: 5.w,),
-              Image.asset('assets/bot_ic.png', width: 35.w, fit: BoxFit.cover,),
-              SizedBox(width: 12.w,),
+              SizedBox(width: 5.w),
+              Image.asset(
+                'assets/bot_ic.png',
+                width: 35.w,
+                fit: BoxFit.cover,
+              ),
+              SizedBox(width: 12.w),
               Text(
                 'Hippo',
                 style: AppTextStyles.labelBold,
@@ -52,10 +56,7 @@ class ChatbotView extends GetView<ChatbotController> {
                         vertical: 8.h,
                       ),
                       children: [
-                        for (final msg in msgs)
-                          _ChatBubble(
-                            message: msg,
-                          ),
+                        for (final msg in msgs) _ChatBubble(message: msg),
 
                         if (scenarioType != ScenarioType.none) ...[
                           SizedBox(height: 12.h),
@@ -117,6 +118,27 @@ class ChatbotView extends GetView<ChatbotController> {
                           controller.sendMessage(value);
                           textController.clear();
                         },
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Obx(
+                          () => GestureDetector(
+                        onTap: () => controller.toggleVoice(),
+                        child: Container(
+                          width: 44.w,
+                          height: 44.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: controller.isListening.value
+                                ? AppColors.secondaryBlue
+                                : AppColors.primaryBlue,
+                          ),
+                          child: Icon(
+                            Icons.mic,
+                            size: 22.sp,
+                            color: AppColors.mainWhite,
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(width: 8.w),

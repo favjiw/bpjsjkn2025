@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 enum ScenarioType {
   none,
@@ -21,8 +22,83 @@ class ChatbotController extends GetxController {
   final messages = <ChatMessage>[].obs;
   final currentScenario = ScenarioType.none.obs;
   final isScenarioCompleted = false.obs;
-
   final isLoadingScenario = false.obs;
+
+  late stt.SpeechToText speech;
+  final isListening = false.obs;
+  final voiceText = ''.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    speech = stt.SpeechToText();
+  }
+
+  Future<void> startListening({String localeId = 'id_ID'}) async {
+    try {
+      final available = await speech.initialize(
+        onStatus: (status) {
+          // boleh dipakai untuk debug jika perlu
+        },
+        onError: (error) {
+          isListening.value = false;
+        },
+      );
+
+      if (!available) {
+        return;
+      }
+
+      isListening.value = true;
+      voiceText.value = '';
+
+      await speech.listen(
+        onResult: (result) async {
+          voiceText.value = result.recognizedWords;
+
+          if (result.finalResult) {
+            await speech.stop();
+            isListening.value = false;
+
+            if (voiceText.value.trim().isNotEmpty) {
+              sendMessage(voiceText.value.trim());
+              voiceText.value = '';
+            }
+          }
+        },
+        localeId: localeId, // paksa Indonesia seperti referensi
+        listenOptions: stt.SpeechListenOptions(
+          listenMode: stt.ListenMode.dictation,
+          partialResults: true,
+          cancelOnError: true,
+        ),
+        listenFor: const Duration(seconds: 8),
+        pauseFor: const Duration(milliseconds: 1500),
+      );
+    } catch (e) {
+      isListening.value = false;
+    }
+  }
+
+  Future<void> stopListening() async {
+    if (!isListening.value) return;
+
+    await speech.stop();
+    isListening.value = false;
+
+    if (voiceText.value.trim().isNotEmpty) {
+      sendMessage(voiceText.value.trim());
+      voiceText.value = '';
+    }
+  }
+
+  Future<void> toggleVoice() async {
+    if (isListening.value) {
+      await stopListening();
+    } else {
+      await startListening(); // default id_ID
+    }
+  }
 
   void sendMessage(String rawInput) {
     if (rawInput.trim().isEmpty) return;
@@ -48,20 +124,19 @@ class ChatbotController extends GetxController {
     currentScenario.value = scenario;
     isLoadingScenario.value = true;
 
-    // Tambah agent bubble (typewriter)
-    messages.add(ChatMessage(
-      isUser: false,
-      text: agentMessage,
-    ));
+    messages.add(
+      ChatMessage(
+        isUser: false,
+        text: agentMessage,
+      ),
+    );
 
-    // delay loading → setelah itu tampilkan scenario form
     Future.delayed(const Duration(seconds: 2), () {
       if (currentScenario.value == scenario) {
         isLoadingScenario.value = false;
       }
     });
   }
-
 
   void _handleSelfBooking() {
     _startLoading(
