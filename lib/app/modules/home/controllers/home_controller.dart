@@ -9,6 +9,11 @@ class HomeController extends GetxController {
 
   List<HomeMenuItemData> menuItems = [
     HomeMenuItemData(
+      title: 'Perizinan Agent AI',
+      iconPath: 'assets/lock_home_ic.png',
+      isLocked: false,
+    ),
+    HomeMenuItemData(
       title: 'Info Program\nJKN',
       iconPath: 'assets/info_program_ic.png',
       isLocked: true,
@@ -84,7 +89,7 @@ class HomeController extends GetxController {
       );
     } else {
       // di sini nanti bisa diarahkan ke halaman sebenarnya
-      // contoh: Get.toNamed('/info-program');
+      Get.toNamed('/consent');
     }
   }
 }

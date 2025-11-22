@@ -14,6 +14,7 @@ abstract class Routes {
   static const CHOOSE_AUTH = _Paths.CHOOSE_AUTH;
   static const SIGNUP = _Paths.SIGNUP;
   static const CHATBOT = _Paths.CHATBOT;
+  static const CONSENT = _Paths.CONSENT;
 }
 
 abstract class _Paths {
@@ -28,4 +29,5 @@ abstract class _Paths {
   static const CHOOSE_AUTH = '/choose-auth';
   static const SIGNUP = '/signup';
   static const CHATBOT = '/chatbot';
+  static const CONSENT = '/consent';
 }

@@ -28,26 +28,38 @@ class HomeView extends GetView<HomeController> {
                   padding: EdgeInsets.symmetric(horizontal: 12.w),
                   child: Column(
                     children: [
-                      SizedBox(height: 12.h,),
+                      SizedBox(height: 12.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           InkWell(
-                            onTap: (){
+                            onTap: () {
                               Get.toNamed('/choose-auth');
                             },
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                IconButton(onPressed: (){
-                                  Get.toNamed('/choose-auth');
-                                }, icon: Icon(Icons.output_rounded, color: AppColors.mainBlack,)),
+                                // IconButton(onPressed: (){
+                                //   Get.toNamed('/choose-auth');
+                                // }, icon: Icon(Icons.output_rounded, color: AppColors.mainBlack,)),
                                 SizedBox(width: 8.w),
-                                Text('Masuk/Daftar', style: AppTextStyles.labelBold,),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Hi, Andi',
+                                      style: AppTextStyles.labelBold,
+                                    ),
+                                    Text(
+                                      'Anggota keluarga aktif',
+                                      style: AppTextStyles.bodySmall,
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
-                          Text('v4.14.0', style: AppTextStyles.labelBold,)
+                          Text('v4.14.0', style: AppTextStyles.labelBold),
                         ],
                       ),
                       const OnlineQueueCard(),

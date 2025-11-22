@@ -11,6 +11,7 @@ class Assets {
   static const String assetsInfoHomeIc = 'assets/info_home_ic.png';
   static const String assetsInfoProgramIc = 'assets/info_program_ic.png';
   static const String assetsJknLogo = 'assets/jkn_logo.jpg';
+  static const String assetsLockHomeIc = 'assets/lock_home_ic.png';
   static const String assetsLoginBgImg = 'assets/login_bg_img.png';
   static const String assetsMapHomeIc = 'assets/map_home_ic.png';
   static const String assetsMenuIc = 'assets/menu_ic.png';

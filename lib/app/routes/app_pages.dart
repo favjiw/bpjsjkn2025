@@ -6,6 +6,8 @@ import '../modules/chatbot/bindings/chatbot_binding.dart';
 import '../modules/chatbot/views/chatbot_view.dart';
 import '../modules/choose_auth/bindings/choose_auth_binding.dart';
 import '../modules/choose_auth/views/choose_auth_view.dart';
+import '../modules/consent/bindings/consent_binding.dart';
+import '../modules/consent/views/consent_view.dart';
 import '../modules/faq/bindings/faq_binding.dart';
 import '../modules/faq/views/faq_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -80,6 +82,11 @@ class AppPages {
       name: _Paths.CHATBOT,
       page: () => const ChatbotView(),
       binding: ChatbotBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONSENT,
+      page: () => const ConsentView(),
+      binding: ConsentBinding(),
     ),
   ];
 }
