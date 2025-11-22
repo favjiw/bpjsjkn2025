@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:flutter_tts/flutter_tts.dart';
 
 enum ScenarioType {
   none,
-  selfBooking, // skenario 1: periksa gigi
-  familyMode,  // skenario 2: ayah radang tenggorokan
-  voiceMode,   // skenario 3: kontrol diabetes
+  selfBooking,   // periksa gigi
+  familyMode,    // ayah radang tenggorokan
+  voiceMode,     // kontrol diabetes (voice)
+  renewBpjs,     // perpanjang bpjs
 }
 
 class ChatMessage {
@@ -25,21 +27,42 @@ class ChatbotController extends GetxController {
   final isLoadingScenario = false.obs;
 
   late stt.SpeechToText speech;
+  late FlutterTts tts;
+
   final isListening = false.obs;
   final voiceText = ''.obs;
+
+  bool lastInputFromVoice = false;
 
   @override
   void onInit() {
     super.onInit();
     speech = stt.SpeechToText();
+    tts = FlutterTts();
+
+    tts.setLanguage('id-ID');
+    tts.setSpeechRate(0.5);
+    tts.setPitch(1.0);
+  }
+
+  Future<void> _speakIfNeeded(String text) async {
+    if (!lastInputFromVoice) return;
+    if (text.trim().isEmpty) return;
+
+    try {
+      await tts.stop();
+      await tts.speak(text);
+    } catch (_) {}
+  }
+
+  Future<void> speakForFormOrSuccess(String text) async {
+    await _speakIfNeeded(text);
   }
 
   Future<void> startListening({String localeId = 'id_ID'}) async {
     try {
       final available = await speech.initialize(
-        onStatus: (status) {
-          // boleh dipakai untuk debug jika perlu
-        },
+        onStatus: (status) {},
         onError: (error) {
           isListening.value = false;
         },
@@ -60,13 +83,15 @@ class ChatbotController extends GetxController {
             await speech.stop();
             isListening.value = false;
 
-            if (voiceText.value.trim().isNotEmpty) {
-              sendMessage(voiceText.value.trim());
+            final spoken = voiceText.value.trim();
+            if (spoken.isNotEmpty) {
+              lastInputFromVoice = true;
+              sendMessage(spoken, fromVoice: true);
               voiceText.value = '';
             }
           }
         },
-        localeId: localeId, // paksa Indonesia seperti referensi
+        localeId: localeId,
         listenOptions: stt.SpeechListenOptions(
           listenMode: stt.ListenMode.dictation,
           partialResults: true,
@@ -86,8 +111,10 @@ class ChatbotController extends GetxController {
     await speech.stop();
     isListening.value = false;
 
-    if (voiceText.value.trim().isNotEmpty) {
-      sendMessage(voiceText.value.trim());
+    final spoken = voiceText.value.trim();
+    if (spoken.isNotEmpty) {
+      lastInputFromVoice = true;
+      sendMessage(spoken, fromVoice: true);
       voiceText.value = '';
     }
   }
@@ -96,18 +123,26 @@ class ChatbotController extends GetxController {
     if (isListening.value) {
       await stopListening();
     } else {
-      await startListening(); // default id_ID
+      await startListening();
     }
   }
 
-  void sendMessage(String rawInput) {
-    if (rawInput.trim().isEmpty) return;
+  void sendMessage(String rawInput, {bool fromVoice = false}) {
+    final cleaned = rawInput.trim();
+    if (cleaned.isEmpty) return;
 
-    messages.add(ChatMessage(text: rawInput.trim(), isUser: true));
+    lastInputFromVoice = fromVoice;
+
+    messages.add(
+      ChatMessage(
+        text: cleaned,
+        isUser: true,
+      ),
+    );
 
     isScenarioCompleted.value = false;
 
-    final input = rawInput.toLowerCase();
+    final input = cleaned.toLowerCase();
 
     if (input.contains('periksa gigi')) {
       _handleSelfBooking();
@@ -115,6 +150,10 @@ class ChatbotController extends GetxController {
       _handleFamilyMode();
     } else if (input.contains('kontrol diabetes')) {
       _handleVoiceMode();
+    } else if (input.contains('perpanjang bpjs') ||
+        input.contains('perpanjang jkn') ||
+        input.contains('bayar iuran')) {
+      _handleRenewBpjs();
     } else {
       _handleFallback();
     }
@@ -131,6 +170,8 @@ class ChatbotController extends GetxController {
       ),
     );
 
+    _speakIfNeeded(agentMessage);
+
     Future.delayed(const Duration(seconds: 2), () {
       if (currentScenario.value == scenario) {
         isLoadingScenario.value = false;
@@ -141,7 +182,7 @@ class ChatbotController extends GetxController {
   void _handleSelfBooking() {
     _startLoading(
       ScenarioType.selfBooking,
-      'Baik, saya siapkan pendaftaran Poli Gigi & Mulut untuk besok. '
+      'Baik, saya siapkan pendaftaran Poli Gigi dan Mulut untuk besok. '
           'Silakan cek dan konfirmasi form pendaftaran yang saya buatkan.',
     );
   }
@@ -157,34 +198,52 @@ class ChatbotController extends GetxController {
   void _handleVoiceMode() {
     _startLoading(
       ScenarioType.voiceMode,
-      'Permintaan kontrol diabetes rutin besok sudah saya proses. '
-          'Berikut konfirmasi jadwal Poli Penyakit Dalam untuk Bapak.',
+      'Baik Pak Agus. Jadwal kontrol diabetes di Poli Penyakit Dalam tersedia besok jam delapan pagi. '
+          'Silakan cek kartu konfirmasi yang saya siapkan.',
+    );
+  }
+
+  void _handleRenewBpjs() {
+    _startLoading(
+      ScenarioType.renewBpjs,
+      'Baik, saya bantu proses perpanjangan iuran BPJS Kesehatan. '
+          'Silakan cek simulasi tagihan dan metode pembayaran yang saya siapkan.',
     );
   }
 
   void _handleFallback() {
     currentScenario.value = ScenarioType.none;
     isLoadingScenario.value = false;
+
+    const fallbackText =
+        'Maaf, untuk demo ini saya hanya merespon kata kunci berikut:\n'
+        '• "periksa gigi"\n'
+        '• "ayah saya ... daftarkan ke poli"\n'
+        '• "kontrol diabetes"\n'
+        '• "perpanjang bpjs" atau "bayar iuran".';
+
     messages.add(
       ChatMessage(
         isUser: false,
-        text:
-        'Maaf, untuk demo ini saya hanya merespon kata kunci:\n'
-            '- "periksa gigi"\n'
-            '- "ayah saya ... daftarkan ke poli"\n'
-            '- "kontrol diabetes".',
+        text: fallbackText,
       ),
     );
+
+    _speakIfNeeded(fallbackText);
   }
 
   void completeScenario() {
     isScenarioCompleted.value = true;
+
+    const msg = 'Aksi berhasil disimulasikan untuk keperluan demo.';
     messages.add(
       ChatMessage(
         isUser: false,
-        text: 'Tiket antrean berhasil dibuat (demo).',
+        text: msg,
       ),
     );
+
+    _speakIfNeeded(msg);
   }
 
   void resetScenario() {
