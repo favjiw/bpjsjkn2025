@@ -182,7 +182,7 @@ class BotnavbarView extends GetView<BotnavbarController> {
                   ),
                   child: InkWell(
                     onTap: () {
-                      controller.currentIndex.value = 2;
+                      controller.showRegisteredNotification();
                     },
                     child: Container(
                       width: 56.w,

@@ -34,6 +34,8 @@ class ScenarioPanel extends StatelessWidget {
         return _VoiceModeWidget(isCompleted: isCompleted, onComplete: onComplete);
       case ScenarioType.renewBpjs:
         return _RenewBpjsWidget(isCompleted: isCompleted, onComplete: onComplete);
+      case ScenarioType.familyDentalBatch:
+        return _FamilyBatchDentalWidget(isCompleted: isCompleted, onComplete: onComplete);
       default:
         return const SizedBox.shrink();
     }
@@ -67,10 +69,13 @@ class _LoadingAgenticRowState extends State<LoadingAgenticRow> {
         return 'Memetakan keluhan diabetes rutin ke Poli Penyakit Dalam dengan input suara.';
       case ScenarioType.renewBpjs:
         return 'Mengecek status kepesertaan, tunggakan, dan menyusun simulasi pembayaran iuran BPJS.';
+      case ScenarioType.familyDentalBatch:
+        return 'Menganalisis permintaan cek gigi kolektif untuk seluruh anggota keluarga dan menyiapkan pendaftaran bersama.';
       default:
         return '';
     }
   }
+
 
   String get _fullLog {
     switch (widget.scenarioType) {
@@ -152,6 +157,41 @@ class _LoadingAgenticRowState extends State<LoadingAgenticRow> {
               '    slot    = 08.00–14.00 (rentang layanan)\n'
               ')\n'
               '- Form disiapkan dan menunggu konfirmasi pengguna sebelum dikirim ke sistem antrean Mobile JKN';
+      case ScenarioType.familyDentalBatch:
+        return
+          'SECTION 1: THINKING\n'
+              'Input: "Saya dan keluarga ingin cek gigi besok"\n'
+              '- Detected intent: Batch Booking for Family\n'
+              '- Entity service: "cek gigi"\n'
+              '- Entity time: "besok"\n'
+              '- Entity group: "seluruh anggota keluarga"\n'
+              '- Channel: Hippo Chat (helper Mobile JKN)\n\n'
+              'SECTION 2: REASONING\n'
+              'Profile & Eligibility:\n'
+              '- Load profil kepala keluarga: Andi / No Kartu: ****1234\n'
+              '- Muat seluruh anggota keluarga yang masih AKTIF dalam satu KK\n'
+              '- Pastikan segmen kepesertaan tiap anggota masih bisa dilayani di FKTP yang sama\n'
+              '- Faskes Tingkat 1 terdaftar: Klinik Harapan Sehat\n'
+              '- Riwayat iuran 3 bulan terakhir: LUNAS (tidak ada tunggakan)\n\n'
+              'Location & Facility Mapping:\n'
+              '- Ambil lokasi pengguna dari GPS terakhir\n'
+              '- Hitung jarak ke Klinik Harapan Sehat (±2.5 km)\n'
+              '- Pastikan Poli Gigi di FKTP tersebut menerima kunjungan keluarga (lebih dari 1 peserta dalam 1 hari)\n\n'
+              'Schedule & Capacity:\n'
+              '- "Besok" → 2025-11-21 (hari kerja, bukan hari libur nasional)\n'
+              '- Jam layanan Poli Gigi: 08.00–12.00\n'
+              '- Ambil slot dr. Rudi – 08.00–10.00 sebagai pilihan utama\n'
+              '- Cek kuota antrean: masih tersedia minimal 4 slot untuk keluarga Andi\n\n'
+              'Risk & Validation Check:\n'
+              '- Pastikan tidak ada antrean gigi aktif sebelumnya untuk tiap anggota di tanggal yang sama\n'
+              '- Validasi batas maksimum anggota keluarga dalam satu batch antrean\n\n'
+              'SECTION 3: ACTION PLAN\n'
+              '- Susun rencana pendaftaran:\n'
+              '  • Peserta: Andi + seluruh anggota keluarga aktif\n'
+              '  • Faskes: Klinik Harapan Sehat – Poli Gigi\n'
+              '  • Jadwal: Besok (21-11-2025), dr. Rudi – 08.00–10.00\n'
+              '- Tampilkan ringkasan rencana ke pengguna dan minta konfirmasi: sudah sesuai atau ingin diubah manual melalui form.';
+
       case ScenarioType.voiceMode:
         return
           'SECTION 1: THINKING\n'
@@ -272,7 +312,7 @@ class _LoadingAgenticRowState extends State<LoadingAgenticRow> {
                     children: [
                       Expanded(
                         child: Text(
-                          'Agentic Log (Demo)',
+                          'Hippo (Log)',
                           style: AppTextStyles.bodySmallSemiBold,
                         ),
                       ),
@@ -515,11 +555,19 @@ class _SuccessTicketCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 6.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Tanggal Rujukan', style: AppTextStyles.bodySmallSemiBold),
-              Text(tanggal, style: AppTextStyles.bodySmall),
+              Text(
+                'Tanggal Rujukan',
+                style: AppTextStyles.bodySmallSemiBold,
+              ),
+              SizedBox(height: 4),
+              Text(
+                tanggal,
+                style: AppTextStyles.bodySmall,
+                softWrap: true,
+              ),
             ],
           ),
           SizedBox(height: 6.h),
@@ -846,8 +894,8 @@ class _SelfBookingWidgetState extends State<_SelfBookingWidget> {
             label: 'Peserta',
             options: [
               'Andi (0001234567890)',
-              'Ibu Siti (0009876543210)',
-              'Adik Rena (0005678901234)',
+              'Siti (0009876543210)',
+              'Rena (0005678901234)',
             ],
             initialValue: 'Andi (0001234567890)',
           ),
@@ -1346,6 +1394,242 @@ class _RenewBpjsWidgetState extends State<_RenewBpjsWidget> {
                 backgroundColor: AppColors.primaryBlue,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.r),
+                ),
+              ),
+              onPressed: widget.onComplete,
+              child: Text(
+                'Simpan',
+                style: AppTextStyles.labelBold.copyWith(
+                  color: AppColors.mainWhite,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+// ===================== Scenario 2B: Family Dental Batch =====================
+
+class _FamilyBatchDentalWidget extends StatefulWidget {
+  final bool isCompleted;
+  final VoidCallback onComplete;
+
+  const _FamilyBatchDentalWidget({
+    required this.isCompleted,
+    required this.onComplete,
+  });
+
+  @override
+  State<_FamilyBatchDentalWidget> createState() => _FamilyBatchDentalWidgetState();
+}
+
+class _FamilyBatchDentalWidgetState extends State<_FamilyBatchDentalWidget> {
+  bool _formSpoken = false;
+  bool _successSpoken = false;
+
+  // opsi peserta keluarga
+  final List<String> _familyOptions = [
+    'Semua anggota keluarga di KK Andi',
+    'Hanya Siti',
+    'Hanya Andi',
+    'Hanya Rena',
+  ];
+
+  String? _selectedParticipant = 'Semua anggota keluarga di KK Andi';
+
+  @override
+  Widget build(BuildContext context) {
+    final ctrl = Get.find<ChatbotController>();
+
+    // jika skenario sudah selesai → tampilkan kartu sukses
+    if (widget.isCompleted) {
+      if (!_successSpoken) {
+        _successSpoken = true;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ctrl.speakForFormOrSuccess(
+            'Pendaftaran cek gigi untuk seluruh anggota keluarga di Klinik Harapan Sehat berhasil dibuat. '
+                'Silakan cek detail antrean di layar.',
+          );
+        });
+      }
+
+      return const _SuccessTicketCard(
+        facilityName: 'KLINIK HARAPAN SEHAT',
+        poli: 'Poli Gigi dan Mulut',
+        doctor: 'dr. Rudi',
+        tanggal: 'Jumat, 21 November 2025 • 08.00–10.00',
+        kodeBooking: 'JKN-1121-0045',
+        nomorAntrean: 'A017–A020 (keluarga)',
+        estimasi: '08.15–09.30 WIB',
+      );
+    }
+
+    // talkback saat form pertama kali muncul
+    if (!_formSpoken) {
+      _formSpoken = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ctrl.speakForFormOrSuccess(
+          'Ini adalah form pendaftaran cek gigi untuk keluarga. '
+              'Pilih peserta dengan mengetuk salah satu nama, lalu sesuaikan jadwal sebelum menyimpan.',
+        );
+      });
+    }
+
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(12.w),
+      decoration: BoxDecoration(
+        color: AppColors.mainWhite,
+        borderRadius: BorderRadius.circular(12.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Form Pendaftaran Cek Gigi Keluarga',
+            style: AppTextStyles.labelBold,
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            'Sesuaikan peserta, faskes, dan jadwal jika diperlukan sebelum menyimpan.',
+            style: AppTextStyles.bodyLight,
+          ),
+          SizedBox(height: 12.h),
+
+          // PESERTA: PILIH SATU, TAMPIL SEBAGAI ROW DENGAN X
+          Text(
+            'Peserta',
+            style: AppTextStyles.bodySmallSemiBold,
+          ),
+          SizedBox(height: 6.h),
+
+          // deretan opsi peserta (single select)
+          Wrap(
+            spacing: 8.w,
+            runSpacing: 8.h,
+            children: _familyOptions.map((option) {
+              final bool isSelected = _selectedParticipant == option;
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _selectedParticipant = option;
+                  });
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                  decoration: BoxDecoration(
+                    color: isSelected ? AppColors.primaryBlue : AppColors.secondaryWhite,
+                    borderRadius: BorderRadius.circular(20.r),
+                    border: Border.all(
+                      color: isSelected ? AppColors.primaryBlue : AppColors.lightGrey,
+                    ),
+                  ),
+                  child: Text(
+                    option,
+                    style: isSelected
+                        ? AppTextStyles.profileUnit.copyWith(
+                      color: AppColors.mainWhite,
+                    )
+                        : AppTextStyles.profileLabel,
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+
+          SizedBox(height: 8.h),
+
+          // row peserta yang terpilih dengan tombol silang di kanan
+          if (_selectedParticipant != null)
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+              margin: EdgeInsets.only(top: 4.h),
+              decoration: BoxDecoration(
+                color: AppColors.secondaryWhite,
+                borderRadius: BorderRadius.circular(10.r),
+                border: Border.all(color: AppColors.lightGrey),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      _selectedParticipant!,
+                      style: AppTextStyles.bodySmall,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  SizedBox(width: 8.w),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        _selectedParticipant = null;
+                      });
+                    },
+                    child: Icon(
+                      Icons.close,
+                      size: 18.sp,
+                      color: AppColors.darkGrey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+          SizedBox(height: 14.h),
+
+          Text(
+            'Fasilitas Kesehatan',
+            style: AppTextStyles.bodySmallSemiBold,
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            'KLINIK HARAPAN SEHAT – Poli Gigi dan Mulut',
+            style: AppTextStyles.bodySmall,
+          ),
+          SizedBox(height: 12.h),
+
+          const _DropdownFormField(
+            label: 'Tanggal Kunjungan',
+            options: [
+              'Besok (21-11-2025)',
+              'Hari ini (20-11-2025)',
+              'Lusa (22-11-2025)',
+            ],
+            initialValue: 'Besok (21-11-2025)',
+          ),
+          const _DropdownFormField(
+            label: 'Pilih Jadwal',
+            options: [
+              'Pilih Tenaga Medis',
+              'dr. Rudi – 08.00–10.00',
+              'dr. Sari – 10.00–12.00',
+            ],
+            initialValue: 'dr. Rudi – 08.00–10.00',
+          ),
+
+          const _ComplaintField(
+            initialText: 'Cek kesehatan gigi berkala seluruh anggota keluarga.',
+          ),
+
+          SizedBox(height: 10.h),
+          SizedBox(
+            width: double.infinity,
+            height: 40.h,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryBlue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.r),
                 ),
               ),
               onPressed: widget.onComplete,

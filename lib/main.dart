@@ -1,3 +1,4 @@
+import 'package:bpjs_jkn_2025/app/data/notification_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'app/routes/app_pages.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
+  await NotificationHelper.init();
   runApp(
     MyApp(),
   );
